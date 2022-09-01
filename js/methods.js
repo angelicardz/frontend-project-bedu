@@ -7,9 +7,9 @@ const urlBase = 'https://www.themealdb.com/api/json/v1/1/';
 const getRecipe = (meal) => {
     let data = [];
     let numberOfElement = 1;
-    while(meal[`${'strIngredient'}${numberOfElement}`] !== ''){
-        let measure = meal[`${'strMeasure'}${numberOfElement}`];
-        let ingredient = meal[`${'strIngredient'}${numberOfElement}`];
+    while(meal[`strIngredient${numberOfElement}`] !== ''){
+        let measure = meal[`strMeasure${numberOfElement}`];
+        let ingredient = meal[`strIngredient${numberOfElement}`];
         data.push(`${measure} - ${ingredient}`);
         numberOfElement++;
     }
