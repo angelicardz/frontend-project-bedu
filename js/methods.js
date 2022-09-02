@@ -4,7 +4,7 @@ const urlBase = 'https://www.themealdb.com/api/json/v1/1/';
  
 // With this function you can get a list of ingredients and measurements
 // because these don't come in the form of a list
-const getRecipe = (meal) => {
+const getIngredients = (meal) => {
     let data = [];
     let numberOfElement = 1;
     while(meal[`strIngredient${numberOfElement}`] !== ''){
