@@ -45,5 +45,5 @@ getMealsByFirstLetter('a').then(data => console.log(data));
 export {
     getMealByName,
     getMealsByFirstLetter,
-    getRecipe
+    getIngredients
 }
