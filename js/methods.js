@@ -34,7 +34,7 @@ const getMealsByFirstLetter = async (letter) => {
 getMealByName('Arrabiata').then(data => {
     console.log(data); 
     // Example of how to get a list of ingredients and measures
-    console.log(getRecipe(data[0])); 
+    console.log(getIngredients(data[0])); 
 });
 
 // Example of the use of getMealsByFirstLetter
