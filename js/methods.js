@@ -17,28 +17,28 @@ const getRecipe = (meal) => {
 }
 
 // Geat meal data
-const getMealByName = async (name, url) => {
-    const data = await apiCall({url: `${url}search.php?s=${name}`});
+const getMealByName = async (name) => {
+    const data = await apiCall({url: `${urlBase}search.php?s=${name}`});
     return data.meals;
 }
 
 // Get all meals by first letter
-const getMealsByFirstLetter = async (letter, url) => {
-    const data = await apiCall({url: `${url}search.php?f=${letter}`});
+const getMealsByFirstLetter = async (letter) => {
+    const data = await apiCall({url: `${urlBase}search.php?f=${letter}`});
     return data.meals;
 }
 
 // MARK: Examples -> 
 
 // Example of how to use getMealByName
-getMealByName('Arrabiata', urlBase).then(data => {
+getMealByName('Arrabiata').then(data => {
     console.log(data); 
     // Example of how to get a list of ingredients and measures
     console.log(getRecipe(data[0])); 
 });
 
 // Example of the use of getMealsByFirstLetter
-getMealsByFirstLetter('a', urlBase).then(data => console.log(data));
+getMealsByFirstLetter('a').then(data => console.log(data));
 
 
 // Exports
