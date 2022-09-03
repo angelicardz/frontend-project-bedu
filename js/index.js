@@ -1,10 +1,10 @@
-import { getMealsByFirstLetter, getMealByName } from "./methods.js";
+import { getMealsByFirstLetter, getMealByName, getRandomMeal } from "./methods.js";
 
 document.onreadystatechange = async () => {
   // Getting all meals that start with letter b to have something to display in the main page
-  const meals = await getMealsByFirstLetter("b");
-
+  let meals = await getMealsByFirstLetter("b");
   document.getElementById("recipe").addEventListener("keyup", searchRecipe);
+  document.getElementById("random-btn").addEventListener("click", displayRandomMeal);
   // This code will be executed once the page is fully loaded
   if (document.readyState === "complete") {
     showRecipes(meals);
@@ -115,3 +115,12 @@ const searchRecipe = async () => {
     document.getElementById("recipes").appendChild(notFoundText);
   }
 };
+
+// Method to display the random meal
+const displayRandomMeal = async () => {
+  const meals = await getRandomMeal();
+  const recipesContainer = document.querySelector("#recipes");
+  removeAllChildNodes(recipesContainer);
+  if (meals) showRecipes(meals);
+};
+
