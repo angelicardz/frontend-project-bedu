@@ -3,9 +3,7 @@ import { createColumn, createElementWithProperties, removeAllChildNodes } from '
 
 document.onreadystatechange = async () => {
   // Getting all meals that start with letter b to have something to display in the main page
-  const meals = await getMealsByFirstLetter("b").catch(err => {
-    window.location.href = "http://127.0.0.1:5500/src/views/Error/Error.html";
-  });
+  const meals = await getMealsByFirstLetter("b").catch(redirectPage);
 
   document.getElementById("recipe").addEventListener("keyup", searchRecipe);
   // This code will be executed once the page is fully loaded
@@ -13,6 +11,11 @@ document.onreadystatechange = async () => {
     showRecipes(meals);
   }
 };
+
+// function to redirect the page to and error page when the API doesn't works
+const redirectPage = () => {
+  window.location.href = "http://127.0.0.1:5500/src/views/Error/Error.html";
+}
 
 // Appending rows and columns to the recipes element
 const showRecipes = (meals) => {
@@ -82,10 +85,8 @@ const searchRecipe = async () => {
   const recipe = document.getElementById("recipe").value.trim();
   const meals =
     recipe === ""
-      ? await getMealsByFirstLetter("b").catch(err => {
-        window.location.href = "http://127.0.0.1:5500/src/views/Error/Error.html";})
-      : await getMealByName(recipe).catch(err => {
-        window.location.href = "http://127.0.0.1:5500/src/views/Error/Error.html";});
+      ? await getMealsByFirstLetter("b").catch(redirectPage)
+      : await getMealByName(recipe).catch(redirectPage);
   const recipesContainer = document.querySelector("#recipes");
   removeAllChildNodes(recipesContainer);
 
