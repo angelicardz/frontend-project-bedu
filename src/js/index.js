@@ -1,14 +1,39 @@
-import { getMealsByFirstLetter, getMealByName} from "./methods.js";
+// Import our custom CSS
+import "../scss/styles.scss";
+
+// Import all of Bootstrap's JS
+import * as bootstrap from "bootstrap";
+
+import {
+  getMealsByFirstLetter,
+  getMealByName,
+  getRandomMeal,
+  getMealByName,
+} from "./methods.js";
+import {
+  createColumn,
+  createElementWithProperties,
+  removeAllChildNodes,
+} from "./utils/utils.js";
 
 document.onreadystatechange = async () => {
   // Getting all meals that start with letter b to have something to display in the main page
-  const meals = await getMealsByFirstLetter("b");
-
+  const meals = await getMealsByFirstLetter("b").catch(redirectPage);
   document.getElementById("recipe").addEventListener("keyup", searchRecipe);
+  document
+    .getElementById("random-btn")
+    .addEventListener("click", displayRandomMeal);
+  document.getElementById("reset-btn").addEventListener("click", resetRecipes);
+
   // This code will be executed once the page is fully loaded
   if (document.readyState === "complete") {
     showRecipes(meals);
   }
+};
+
+// function to redirect the page to and error page when the API doesn't works
+const redirectPage = () => {
+  window.location.href = "../src/views/Error/Error.html";
 };
 
 // Appending rows and columns to the recipes element
@@ -26,23 +51,6 @@ const showRecipes = (meals) => {
     appendCard(column, meal);
     recipeNumber += 1;
   }
-};
-
-// Function to create html elements with properties
-const createElementWithProperties = (element, properties) => {
-  const newElement = document.createElement(element);
-  for (const [key, value] of Object.entries(properties)) {
-    newElement[key] = value;
-  }
-  return newElement;
-};
-
-// Function to create a bootstrap column
-const createColumn = () => {
-  const column = createElementWithProperties("div", {
-    className: "col-md-6 col-lg-3 pt-3",
-  });
-  return column;
 };
 
 // Function to append Bootstrap cards to columns
@@ -72,7 +80,6 @@ const appendCard = (appendToElement, meal) => {
     className: "btn btn-warning temporal",
   });
 
-
   // Appending textNodes
   const title = document.createTextNode(meal.strMeal);
   const text = document.createTextNode(`Area: ${meal.strArea}`);
@@ -90,15 +97,6 @@ const appendCard = (appendToElement, meal) => {
   cardTitle.appendChild(title);
   cardText.appendChild(text);
   link.appendChild(buttonText);
-
-
-};
-
-// Function to remove child nodes from an element
-const removeAllChildNodes = (parent) => {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
 };
 
 // Method to search specific recipes
@@ -106,8 +104,8 @@ const searchRecipe = async () => {
   const recipe = document.getElementById("recipe").value.trim();
   const meals =
     recipe === ""
-      ? await getMealsByFirstLetter("b")
-      : await getMealByName(recipe);
+      ? await getMealsByFirstLetter("b").catch(redirectPage)
+      : await getMealByName(recipe).catch(redirectPage);
   const recipesContainer = document.querySelector("#recipes");
   removeAllChildNodes(recipesContainer);
 
@@ -119,51 +117,74 @@ const searchRecipe = async () => {
   }
 };
 
+// Method to display the random meal
+const displayRandomMeal = async () => {
+  const meals = await getRandomMeal();
+  document.getElementById("recipe").value = "";
+  if (meals) {
+    const recipesContainer = document.querySelector("#recipes");
+    removeAllChildNodes(recipesContainer);
+    showRecipes(meals);
+  }
+};
 
+// Method to reset recipes
+const resetRecipes = async () => {
+  // const recipe = document.getElementById("recipe").value.trim();
+  const meals = await getMealsByFirstLetter("b");
+  document.getElementById("recipe").value = "";
+
+  if (meals) {
+    const recipesContainer = document.querySelector("#recipes");
+    removeAllChildNodes(recipesContainer);
+    showRecipes(meals);
+  }
+};
 
 //----------------------------------------------------------------------------------
 
-const mealIngredients = document.getElementById('recipes');
+const mealIngredients = document.getElementById("recipes");
 const modalC = document.getElementsByClassName("container-modal")[0];
-const modal = document.getElementsByClassName('content-modal')[0];
+const modal = document.getElementsByClassName("content-modal")[0];
 
-const recipeCloseBtn = document.getElementById('recipe-close-btn');
+const recipeCloseBtn = document.getElementById("recipe-close-btn");
 
-mealIngredients.addEventListener('click',getMealRecipe);
-
+mealIngredients.addEventListener("click", getMealRecipe);
 
 // get recipe of the meal
-function getMealRecipe(e){
+function getMealRecipe(e) {
   e.preventDefault();
-  if(e.target.classList.contains('temporal')){
-    let mealItem = e.target.parentElement.parentElement.querySelector('a').id;
-    console.log(mealItem)
+  if (e.target.classList.contains("temporal")) {
+    let mealItem = e.target.parentElement.parentElement.querySelector("a").id;
+    console.log(mealItem);
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem}`)
-        .then(response => response.json())
-        .then(data => mealRecipeModal(data.meals));
-    modalC.style.display='flex'; 
+      .then((response) => response.json())
+      .then((data) => mealRecipeModal(data.meals));
+    modalC.style.display = "flex";
   }
 }
 
 // create a modal
-function mealRecipeModal(meal){
+function mealRecipeModal(meal) {
   meal = meal[0];
 
   let data = [];
   let numberOfElement = 1;
-  while(meal[`strIngredient${numberOfElement}`] !== ''){
+  while (meal[`strIngredient${numberOfElement}`] !== "") {
     let measure = meal[`strMeasure${numberOfElement}`];
     let ingredient = meal[`strIngredient${numberOfElement}`];
     data.push(`${measure} - ${ingredient}`);
     numberOfElement++;
   }
-  console.log(data)
+  console.log(data);
 
   let html = `
       <h2 class = "recipe-title">${meal.strMeal}</h2>
       <p class = "recipe-category">${meal.strCategory}</p>
       <h4>Ingredients:</h4>
-      <ul class = "ingredients ">${data.map(OneIngredient => `<li>${OneIngredient}</li>`).join('')}</ul>
+      <ul class = "ingredients ">${data
+        .map((OneIngredient) => `<li>${OneIngredient}</li>`)
+        .join("")}</ul>
       <div class = "recipe-instruct">
           <h4>Instructions:</h4>
           <p>${meal.strInstructions}</p>
@@ -179,18 +200,10 @@ function mealRecipeModal(meal){
 
       `;
   modal.innerHTML = html;
-  modal.parentElement.classList.add('showRecipes');
+  modal.parentElement.classList.add("showRecipes");
 }
 
-modalC.addEventListener('click', () => {
+modalC.addEventListener("click", () => {
   //modal.parentElement.classList.remove('showRecipe');
-  modalC.style.display='none';
+  modalC.style.display = "none";
 });
-
-/*
-const close = document.getElementsByClassName("close")[0];
-console.log(close)
-
-close.addEventListener('click', () => {
-  modal.style.display='none';
-});*/

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipes</title>
+  <!-- Icon -->
+  <link rel="icon" href="../src/img/icon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+</head>
+
+<body>
+  <div class="container pt-5 pb-5">
+    <div class="row d-flex justify-content-center">
+      <div class="col">
+        Search your favorite recipe or click on Surprise me to get an awesome suggested recipe!
+      </div>
+    </div>
+    <div class="row d-flex pt-4">
+      <div class="col-md-9 mb-4">
+        <input id="recipe" type="text" class="form-control" placeholder="Search your favorite recipe here"
+          aria-label="Recipient's username" aria-describedby="basic-addon2">
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-warning" id="random-btn">Surprise me! <i class="fa-solid fa-dice"></i></button>
+        <button class="btn btn-warning" id="reset-btn">Reset</button>
+      </div>
+    </div>
+    <div id="recipes"></div>
+  </div>
+
+  <script type="module" src="../js/index.js"></script>
+</body>
+
+</html>
