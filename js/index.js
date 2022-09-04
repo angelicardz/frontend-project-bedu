@@ -2,9 +2,10 @@ import { getMealsByFirstLetter, getMealByName, getRandomMeal } from "./methods.j
 
 document.onreadystatechange = async () => {
   // Getting all meals that start with letter b to have something to display in the main page
-  let meals = await getMealsByFirstLetter("b");
+  const meals = await getMealsByFirstLetter("b");
   document.getElementById("recipe").addEventListener("keyup", searchRecipe);
   document.getElementById("random-btn").addEventListener("click", displayRandomMeal);
+  document.getElementById("reset-btn").addEventListener("click", resetRecipes);
   // This code will be executed once the page is fully loaded
   if (document.readyState === "complete") {
     showRecipes(meals);
@@ -119,8 +120,23 @@ const searchRecipe = async () => {
 // Method to display the random meal
 const displayRandomMeal = async () => {
   const meals = await getRandomMeal();
-  const recipesContainer = document.querySelector("#recipes");
-  removeAllChildNodes(recipesContainer);
-  if (meals) showRecipes(meals);
+  document.getElementById("recipe").value = "";
+  if (meals) {
+    const recipesContainer = document.querySelector("#recipes");
+    removeAllChildNodes(recipesContainer);
+    showRecipes(meals);
+  }
 };
 
+// Method to reset recipes
+const resetRecipes = async () => {
+  // const recipe = document.getElementById("recipe").value.trim();
+  const meals = await getMealsByFirstLetter("b");
+  document.getElementById("recipe").value = "";
+
+  if (meals) {
+    const recipesContainer = document.querySelector("#recipes");
+    removeAllChildNodes(recipesContainer);
+    showRecipes(meals);
+  }
+};
