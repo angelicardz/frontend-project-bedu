@@ -14,7 +14,7 @@ document.onreadystatechange = async () => {
 
 // function to redirect the page to and error page when the API doesn't works
 const redirectPage = () => {
-  window.location.href = "http://127.0.0.1:5500/src/views/Error/Error.html";
+  window.location.href = "../src/views/Error/Error.html";
 }
 
 // Appending rows and columns to the recipes element
