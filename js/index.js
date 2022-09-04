@@ -1,16 +1,23 @@
 import { getMealsByFirstLetter, getMealByName, getRandomMeal } from "./methods.js";
+import { createColumn, createElementWithProperties, removeAllChildNodes } from './utils/utils.js';
 
 document.onreadystatechange = async () => {
   // Getting all meals that start with letter b to have something to display in the main page
-  const meals = await getMealsByFirstLetter("b");
+  const meals = await getMealsByFirstLetter("b").catch(redirectPage);
   document.getElementById("recipe").addEventListener("keyup", searchRecipe);
   document.getElementById("random-btn").addEventListener("click", displayRandomMeal);
   document.getElementById("reset-btn").addEventListener("click", resetRecipes);
+  
   // This code will be executed once the page is fully loaded
   if (document.readyState === "complete") {
     showRecipes(meals);
   }
 };
+
+// function to redirect the page to and error page when the API doesn't works
+const redirectPage = () => {
+  window.location.href = "../src/views/Error/Error.html";
+}
 
 // Appending rows and columns to the recipes element
 const showRecipes = (meals) => {
@@ -27,23 +34,6 @@ const showRecipes = (meals) => {
     appendCard(column, meal);
     recipeNumber += 1;
   }
-};
-
-// Function to create html elements with properties
-const createElementWithProperties = (element, properties) => {
-  const newElement = document.createElement(element);
-  for (const [key, value] of Object.entries(properties)) {
-    newElement[key] = value;
-  }
-  return newElement;
-};
-
-// Function to create a bootstrap column
-const createColumn = () => {
-  const column = createElementWithProperties("div", {
-    className: "col-md-6 col-lg-3 pt-3",
-  });
-  return column;
 };
 
 // Function to append Bootstrap cards to columns
@@ -92,20 +82,13 @@ const appendCard = (appendToElement, meal) => {
   link.appendChild(buttonText);
 };
 
-// Function to remove child nodes from an element
-const removeAllChildNodes = (parent) => {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-};
-
 // Method to search specific recipes
 const searchRecipe = async () => {
   const recipe = document.getElementById("recipe").value.trim();
   const meals =
     recipe === ""
-      ? await getMealsByFirstLetter("b")
-      : await getMealByName(recipe);
+      ? await getMealsByFirstLetter("b").catch(redirectPage)
+      : await getMealByName(recipe).catch(redirectPage);
   const recipesContainer = document.querySelector("#recipes");
   removeAllChildNodes(recipesContainer);
 
