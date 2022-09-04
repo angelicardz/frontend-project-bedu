@@ -13,6 +13,7 @@ const getIngredients = (meal) => {
         data.push(`${measure} - ${ingredient}`);
         numberOfElement++;
     }
+    console.log(data);
     return data;
 }
 
@@ -45,5 +46,5 @@ getMealsByFirstLetter('a').then(data => console.log(data));
 export {
     getMealByName,
     getMealsByFirstLetter,
-    getIngredients
+    getIngredients,
 }
