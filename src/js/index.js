@@ -1,13 +1,29 @@
-import { getMealsByFirstLetter, getMealByName, getRandomMeal } from "./methods.js";
-import { createColumn, createElementWithProperties, removeAllChildNodes } from './utils/utils.js';
+// Import our custom CSS
+import "../scss/styles.scss";
+
+// Import all of Bootstrap's JS
+import * as bootstrap from "bootstrap";
+
+import {
+  getMealsByFirstLetter,
+  getMealByName,
+  getRandomMeal,
+} from "./methods.js";
+import {
+  createColumn,
+  createElementWithProperties,
+  removeAllChildNodes,
+} from "./utils/utils.js";
 
 document.onreadystatechange = async () => {
   // Getting all meals that start with letter b to have something to display in the main page
   const meals = await getMealsByFirstLetter("b").catch(redirectPage);
   document.getElementById("recipe").addEventListener("keyup", searchRecipe);
-  document.getElementById("random-btn").addEventListener("click", displayRandomMeal);
+  document
+    .getElementById("random-btn")
+    .addEventListener("click", displayRandomMeal);
   document.getElementById("reset-btn").addEventListener("click", resetRecipes);
-  
+
   // This code will be executed once the page is fully loaded
   if (document.readyState === "complete") {
     showRecipes(meals);
@@ -17,7 +33,7 @@ document.onreadystatechange = async () => {
 // function to redirect the page to and error page when the API doesn't works
 const redirectPage = () => {
   window.location.href = "../src/views/Error/Error.html";
-}
+};
 
 // Appending rows and columns to the recipes element
 const showRecipes = (meals) => {
