@@ -8,6 +8,9 @@
   <title>Recipes</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
 </head>
 </head>
@@ -16,7 +19,7 @@
   <div class="container pt-5 pb-5">
     <div class="row d-flex justify-content-center">
       <div class="col">
-        Search your favorite recipe or click on Surprise recipe to get an awesome suggested recipe!
+        Search your favorite recipe or click on Surprise me to get an awesome suggested recipe!
       </div>
     </div>
     <div class="row d-flex pt-4">
@@ -25,7 +28,8 @@
           aria-label="Recipient's username" aria-describedby="basic-addon2">
       </div>
       <div class="col-md-3">
-        <button class="btn btn-warning">Surprise recipe</button>
+        <button class="btn btn-warning" id="random-btn">Surprise me! <i class="fa-solid fa-dice"></i></button>
+        <button class="btn btn-warning" id="reset-btn">Reset</button>
       </div>
     </div>
 
