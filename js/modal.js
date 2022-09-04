@@ -1,3 +1,5 @@
+import { getIngredients } from "./methods.js";
+
 const mealIngredients = document.getElementById('recipes');
 const modalC = document.getElementsByClassName("container-modal")[0];
 const modal = document.getElementsByClassName('content-modal')[0];
@@ -20,11 +22,9 @@ function getMealRecipe(e){
   }
 }
 
-// create a modal
+// Create Modal with data
 function mealRecipeModal(meal){
-  console.log(meal);
   meal = meal[0];
-
   let data = [];
   let numberOfElement = 1;
   while(meal[`strIngredient${numberOfElement}`] !== ''){
@@ -38,9 +38,10 @@ function mealRecipeModal(meal){
   let html = `
       <h2 class = "recipe-title">${meal.strMeal}</h2>
       <p class = "recipe-category">${meal.strCategory}</p>
-      <p class = "ingredients ">${data}</p>
+      <h4>Ingredients:</h4>
+      <ul class = "ingredients ">${data.map(OneIngredient => `<li>${OneIngredient}</li>`).join('')}</ul>
       <div class = "recipe-instruct">
-          <h3>Instructions:</h3>
+          <h4>Instructions:</h4>
           <p>${meal.strInstructions}</p>
       </div>
       <div class = "recipe-meal-img">
@@ -49,7 +50,7 @@ function mealRecipeModal(meal){
       <div class = "recipe-link">
           <a href = "${meal.strYoutube}" target = "_blank">Watch Video</a>
       </div>
-  `;
+      `;
   modal.innerHTML = html;
   modal.parentElement.classList.add('showRecipes');
 }
@@ -57,6 +58,3 @@ function mealRecipeModal(meal){
 modalC.addEventListener('click', () => {
   modalC.style.display='none';
 });
-
-
-

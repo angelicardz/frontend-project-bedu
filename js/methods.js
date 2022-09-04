@@ -13,7 +13,6 @@ const getIngredients = (meal) => {
         data.push(`${measure} - ${ingredient}`);
         numberOfElement++;
     }
-    console.log(data);
     return data;
 }
 

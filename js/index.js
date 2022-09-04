@@ -1,4 +1,4 @@
-import { getMealsByFirstLetter, getMealByName, getIngredients } from "./methods.js";
+import { getMealsByFirstLetter, getMealByName} from "./methods.js";
 
 document.onreadystatechange = async () => {
   // Getting all meals that start with letter b to have something to display in the main page
@@ -147,7 +147,6 @@ function getMealRecipe(e){
 
 // create a modal
 function mealRecipeModal(meal){
-  console.log(meal);
   meal = meal[0];
 
   let data = [];
@@ -163,18 +162,22 @@ function mealRecipeModal(meal){
   let html = `
       <h2 class = "recipe-title">${meal.strMeal}</h2>
       <p class = "recipe-category">${meal.strCategory}</p>
-      <p class = "ingredients ">${data}</p>
+      <h4>Ingredients:</h4>
+      <ul class = "ingredients ">${data.map(OneIngredient => `<li>${OneIngredient}</li>`).join('')}</ul>
       <div class = "recipe-instruct">
-          <h3>Instructions:</h3>
+          <h4>Instructions:</h4>
           <p>${meal.strInstructions}</p>
       </div>
+      
       <div class = "recipe-meal-img">
           <img src = "${meal.strMealThumb}" alt = "">
       </div>
       <div class = "recipe-link">
           <a href = "${meal.strYoutube}" target = "_blank">Watch Video</a>
       </div>
-  `;
+
+
+      `;
   modal.innerHTML = html;
   modal.parentElement.classList.add('showRecipes');
 }
