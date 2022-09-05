@@ -32,7 +32,7 @@ document.onreadystatechange = async () => {
 
 // function to redirect the page to and error page when the API doesn't works
 const redirectPage = () => {
-  window.location.href = "../src/views/Error/Error.html";
+  window.location.href = "../views/Error/Error.html";
 };
 
 // Appending rows and columns to the recipes element
@@ -160,6 +160,8 @@ const showModalInfo = async (mealId) => {
   removeAllChildNodes(titleModal);
   removeAllChildNodes(ingredients);
   removeAllChildNodes(instructionsModal);
+  removeAllChildNodes(category);
+  removeAllChildNodes(area);
 
   titleModal.appendChild(document.createTextNode(meal.strMeal));
   instructionsModal.appendChild(document.createTextNode(meal.strInstructions));
