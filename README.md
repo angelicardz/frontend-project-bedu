@@ -3,6 +3,8 @@
 ## API - TheMealDB
 [TheMealDB](https://www.themealdb.com/api.php)
 
+![TheMealDB](https://apilist.fun/images/social/api/the-meal-db.png)
+
 ## Description 
 This food API is free to use and you can get recipes, food details, food names, food by category, food images and more.
 For this project, an application has been generated which is capable of showing different dishes to users, whether they search for them or generate a random result, these results are capable of showing the instructions for preparing said dish in the form of a pop-up window.
