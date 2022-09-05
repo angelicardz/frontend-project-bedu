@@ -79,7 +79,7 @@ const appendCard = (appendToElement, meal) => {
   });
   button.setAttribute("type", "button");
   button.setAttribute("data-bs-toggle", "modal");
-  button.setAttribute("data-bs-target", "#exampleModal");
+  button.setAttribute("data-bs-target", "#recipeModal");
   button.onclick = function () {
     showModalInfo(this.id);
   };
@@ -147,8 +147,7 @@ const resetRecipes = async () => {
 
 // Function to show the recipe information in the modal
 const showModalInfo = async (mealId) => {
-  const meal /* { strMeal, strInstructions, strYoutube, strArea, strCategory }*/ =
-    await getMealById(mealId);
+  const meal = await getMealById(mealId);
   const ingredientsMeal = await getIngredients(meal);
 
   const titleModal = document.getElementById("recipe-name");
@@ -173,8 +172,6 @@ const showModalInfo = async (mealId) => {
     ingredients.append(listElement);
   }
 
-  /*const videoSrc = meal.strYoutube.replace("/watch?v=", "/embed/");
-
-  console.log(videoSrc);
-  document.getElementById("video-src").src = videoSrc;*/
+  const videoSrc = meal.strYoutube.replace("/watch?v=", "/embed/");
+  document.getElementById("video-src").src = videoSrc;
 };
