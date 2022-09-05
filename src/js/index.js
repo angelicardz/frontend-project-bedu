@@ -1,14 +1,12 @@
 // Import our custom CSS
 import "../scss/styles.scss";
 
-// Import all of Bootstrap's JS
-import * as bootstrap from "bootstrap";
-
 import {
   getMealsByFirstLetter,
   getMealByName,
   getRandomMeal,
-  getMealByName,
+  getMealById,
+  getIngredients,
 } from "./methods.js";
 import {
   createColumn,
@@ -71,14 +69,20 @@ const appendCard = (appendToElement, meal) => {
   const cardText = createElementWithProperties("p", {
     className: "card-text",
   });
-  const linkContainer = createElementWithProperties("div", {
+  const buttonContainer = createElementWithProperties("div", {
     className: "d-flex justify-content-center",
   });
-  const link = createElementWithProperties("a", {
+  getMealById;
+  const button = createElementWithProperties("button", {
     id: meal.idMeal,
-    href: "#",
     className: "btn btn-warning temporal",
   });
+  button.setAttribute("type", "button");
+  button.setAttribute("data-bs-toggle", "modal");
+  button.setAttribute("data-bs-target", "#exampleModal");
+  button.onclick = function () {
+    showModalInfo(this.id);
+  };
 
   // Appending textNodes
   const title = document.createTextNode(meal.strMeal);
@@ -90,13 +94,13 @@ const appendCard = (appendToElement, meal) => {
   card.append(cardBody);
   cardBody.append(cardTitle);
   cardBody.append(cardText);
-  cardBody.append(linkContainer);
-  linkContainer.append(link);
+  cardBody.append(buttonContainer);
+  buttonContainer.append(button);
   appendToElement.append(card);
 
   cardTitle.appendChild(title);
   cardText.appendChild(text);
-  link.appendChild(buttonText);
+  button.appendChild(buttonText);
 };
 
 // Method to search specific recipes
@@ -141,69 +145,36 @@ const resetRecipes = async () => {
   }
 };
 
-//----------------------------------------------------------------------------------
+// Function to show the recipe information in the modal
+const showModalInfo = async (mealId) => {
+  const meal /* { strMeal, strInstructions, strYoutube, strArea, strCategory }*/ =
+    await getMealById(mealId);
+  const ingredientsMeal = await getIngredients(meal);
 
-const mealIngredients = document.getElementById("recipes");
-const modalC = document.getElementsByClassName("container-modal")[0];
-const modal = document.getElementsByClassName("content-modal")[0];
+  const titleModal = document.getElementById("recipe-name");
+  const ingredients = document.getElementById("ingredients");
+  const instructionsModal = document.getElementById("instructions");
+  const category = document.getElementById("category");
+  const area = document.getElementById("area");
 
-const recipeCloseBtn = document.getElementById("recipe-close-btn");
+  removeAllChildNodes(titleModal);
+  removeAllChildNodes(ingredients);
+  removeAllChildNodes(instructionsModal);
 
-mealIngredients.addEventListener("click", getMealRecipe);
+  titleModal.appendChild(document.createTextNode(meal.strMeal));
+  instructionsModal.appendChild(document.createTextNode(meal.strInstructions));
+  category.appendChild(document.createTextNode(meal.strCategory));
+  area.appendChild(document.createTextNode(meal.strArea));
 
-// get recipe of the meal
-function getMealRecipe(e) {
-  e.preventDefault();
-  if (e.target.classList.contains("temporal")) {
-    let mealItem = e.target.parentElement.parentElement.querySelector("a").id;
-    console.log(mealItem);
-    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem}`)
-      .then((response) => response.json())
-      .then((data) => mealRecipeModal(data.meals));
-    modalC.style.display = "flex";
+  for (let i = 0; i < ingredientsMeal.length; i++) {
+    const listElement = document.createElement("li");
+    const ingredientText = document.createTextNode(ingredientsMeal[i]);
+    listElement.append(ingredientText);
+    ingredients.append(listElement);
   }
-}
 
-// create a modal
-function mealRecipeModal(meal) {
-  meal = meal[0];
+  /*const videoSrc = meal.strYoutube.replace("/watch?v=", "/embed/");
 
-  let data = [];
-  let numberOfElement = 1;
-  while (meal[`strIngredient${numberOfElement}`] !== "") {
-    let measure = meal[`strMeasure${numberOfElement}`];
-    let ingredient = meal[`strIngredient${numberOfElement}`];
-    data.push(`${measure} - ${ingredient}`);
-    numberOfElement++;
-  }
-  console.log(data);
-
-  let html = `
-      <h2 class = "recipe-title">${meal.strMeal}</h2>
-      <p class = "recipe-category">${meal.strCategory}</p>
-      <h4>Ingredients:</h4>
-      <ul class = "ingredients ">${data
-        .map((OneIngredient) => `<li>${OneIngredient}</li>`)
-        .join("")}</ul>
-      <div class = "recipe-instruct">
-          <h4>Instructions:</h4>
-          <p>${meal.strInstructions}</p>
-      </div>
-      
-      <div class = "recipe-meal-img">
-          <img src = "${meal.strMealThumb}" alt = "">
-      </div>
-      <div class = "recipe-link">
-          <a href = "${meal.strYoutube}" target = "_blank">Watch Video</a>
-      </div>
-
-
-      `;
-  modal.innerHTML = html;
-  modal.parentElement.classList.add("showRecipes");
-}
-
-modalC.addEventListener("click", () => {
-  //modal.parentElement.classList.remove('showRecipe');
-  modalC.style.display = "none";
-});
+  console.log(videoSrc);
+  document.getElementById("video-src").src = videoSrc;*/
+};

@@ -33,6 +33,12 @@ const getRandomMeal = async () => {
   return data.meals;
 };
 
+// Get meal by id
+const getMealById = async (mealId) => {
+  const data = await apiCall({ url: `${urlBase}lookup.php?i=${mealId}` });
+  return data.meals[0];
+};
+
 // MARK: Examples ->
 
 // Example of how to use getMealByName
@@ -46,4 +52,10 @@ getMealByName("Arrabiata").then((data) => {
 getMealsByFirstLetter("a").then((data) => console.log(data));
 
 // Exports
-export { getMealByName, getMealsByFirstLetter, getIngredients, getRandomMeal };
+export {
+  getMealByName,
+  getMealsByFirstLetter,
+  getIngredients,
+  getRandomMeal,
+  getMealById,
+};

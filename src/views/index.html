@@ -32,6 +32,41 @@
       </div>
     </div>
     <div id="recipes"></div>
+    <div id="recipes"></div>
+    <div class="container-modal">
+      <div class="content-modal">
+      </div>
+    </div>
+
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="recipe-name" class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <p><b>Area:</b> <span id="area"></span></p>
+          <p><b>Category:</b> <span id="category"></span></p>
+          <b>Ingredients:</b>
+          <ul id="ingredients"></ul>
+          <b>Procedure:</b>
+          <div id="instructions"></div><br>
+          <b>Video:</b>
+          <iframe width="100%" height="360" id="video-src">
+          </iframe>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="../js/index.js"></script>
