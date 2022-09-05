@@ -1,13 +1,13 @@
 // Import our custom CSS
 import "../scss/styles.scss";
-
-// Import all of Bootstrap's JS
-import * as bootstrap from "bootstrap";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 import {
   getMealsByFirstLetter,
   getMealByName,
   getRandomMeal,
+  getMealById,
+  getIngredients,
 } from "./methods.js";
 import {
   createColumn,
@@ -32,7 +32,7 @@ document.onreadystatechange = async () => {
 
 // function to redirect the page to and error page when the API doesn't works
 const redirectPage = () => {
-  window.location.href = "../src/views/Error/Error.html";
+  window.location.href = "../views/Error/Error.html";
 };
 
 // Appending rows and columns to the recipes element
@@ -55,7 +55,7 @@ const showRecipes = (meals) => {
 // Function to append Bootstrap cards to columns
 const appendCard = (appendToElement, meal) => {
   // Creating html elements
-  const card = createElementWithProperties("div", { className: "card" });
+  const card = createElementWithProperties("div", { className: "card meal" });
   const image = createElementWithProperties("img", {
     src: meal.strMealThumb,
     className: "card-img-top",
@@ -70,14 +70,20 @@ const appendCard = (appendToElement, meal) => {
   const cardText = createElementWithProperties("p", {
     className: "card-text",
   });
-  const linkContainer = createElementWithProperties("div", {
+  const buttonContainer = createElementWithProperties("div", {
     className: "d-flex justify-content-center",
   });
-  const link = createElementWithProperties("a", {
+  getMealById;
+  const button = createElementWithProperties("button", {
     id: meal.idMeal,
-    href: "#recipeModal",
-    className: "btn btn-warning",
+    className: "btn btn-warning temporal",
   });
+  button.setAttribute("type", "button");
+  button.setAttribute("data-bs-toggle", "modal");
+  button.setAttribute("data-bs-target", "#recipeModal");
+  button.onclick = function () {
+    showModalInfo(this.id);
+  };
 
   // Appending textNodes
   const title = document.createTextNode(meal.strMeal);
@@ -89,13 +95,13 @@ const appendCard = (appendToElement, meal) => {
   card.append(cardBody);
   cardBody.append(cardTitle);
   cardBody.append(cardText);
-  cardBody.append(linkContainer);
-  linkContainer.append(link);
+  cardBody.append(buttonContainer);
+  buttonContainer.append(button);
   appendToElement.append(card);
 
   cardTitle.appendChild(title);
   cardText.appendChild(text);
-  link.appendChild(buttonText);
+  button.appendChild(buttonText);
 };
 
 // Method to search specific recipes
@@ -138,4 +144,37 @@ const resetRecipes = async () => {
     removeAllChildNodes(recipesContainer);
     showRecipes(meals);
   }
+};
+
+// Function to show the recipe information in the modal
+const showModalInfo = async (mealId) => {
+  const meal = await getMealById(mealId);
+  const ingredientsMeal = await getIngredients(meal);
+
+  const titleModal = document.getElementById("recipe-name");
+  const ingredients = document.getElementById("ingredients");
+  const instructionsModal = document.getElementById("instructions");
+  const category = document.getElementById("category");
+  const area = document.getElementById("area");
+
+  removeAllChildNodes(titleModal);
+  removeAllChildNodes(ingredients);
+  removeAllChildNodes(instructionsModal);
+  removeAllChildNodes(category);
+  removeAllChildNodes(area);
+
+  titleModal.appendChild(document.createTextNode(meal.strMeal));
+  instructionsModal.appendChild(document.createTextNode(meal.strInstructions));
+  category.appendChild(document.createTextNode(meal.strCategory));
+  area.appendChild(document.createTextNode(meal.strArea));
+
+  for (let i = 0; i < ingredientsMeal.length; i++) {
+    const listElement = document.createElement("li");
+    const ingredientText = document.createTextNode(ingredientsMeal[i]);
+    listElement.append(ingredientText);
+    ingredients.append(listElement);
+  }
+
+  const videoSrc = meal.strYoutube.replace("/watch?v=", "/embed/");
+  document.getElementById("video-src").src = videoSrc;
 };
