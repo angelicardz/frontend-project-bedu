@@ -4,11 +4,11 @@ const urlBase = "https://www.themealdb.com/api/json/v1/1/";
 // With this function you can get a list of ingredients and measurements
 // because these don't come in the form of a list
 const getIngredients = (meal) => {
-  let data = [];
+  const data = [];
   let numberOfElement = 1;
   while (meal[`strIngredient${numberOfElement}`] !== "") {
-    let measure = meal[`strMeasure${numberOfElement}`];
-    let ingredient = meal[`strIngredient${numberOfElement}`];
+    const measure = meal[`strMeasure${numberOfElement}`];
+    const ingredient = meal[`strIngredient${numberOfElement}`];
     data.push(`${measure} - ${ingredient}`);
     numberOfElement++;
   }
@@ -38,18 +38,6 @@ const getMealById = async (mealId) => {
   const data = await apiCall({ url: `${urlBase}lookup.php?i=${mealId}` });
   return data.meals[0];
 };
-
-// MARK: Examples ->
-
-// Example of how to use getMealByName
-getMealByName("Arrabiata").then((data) => {
-  console.log(data);
-  // Example of how to get a list of ingredients and measures
-  console.log(getIngredients(data[0]));
-});
-
-// Example of the use of getMealsByFirstLetter
-getMealsByFirstLetter("a").then((data) => console.log(data));
 
 // Exports
 export {
