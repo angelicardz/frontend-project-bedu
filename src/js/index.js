@@ -1,5 +1,6 @@
 // Import our custom CSS
 import "../scss/styles.scss";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 import {
   getMealsByFirstLetter,
