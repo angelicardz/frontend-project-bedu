@@ -20,4 +20,4 @@ For this project, an application has been generated which is capable of showing 
 ### Install dependencies
 To install the necessary dependencies to run the program we must use the ```npm install``` command.
 ### Run project
-To run the project we can use the ```npm run start``` command.
+To run the project we can use the ```npm start``` command.
